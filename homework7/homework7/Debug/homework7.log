@@ -1,0 +1,17 @@
+﻿生成启动时间为 2016/11/17 21:52:40。
+     1>项目“C:\Users\duan\Desktop\c++\连通分量\homework7\homework7\homework7.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oi /Ot /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\main.cpp ..\..\temp.cpp ..\..\UFSets.cpp
+         UFSets.cpp
+         temp.cpp
+     1>c:\users\duan\desktop\c++\连通分量\graph.h(264): error C2039: “Kruskal”: 不是“Graph<T,E>”的成员
+     1>c:\users\duan\desktop\c++\连通分量\graph.h(299): error C2039: “Prim”: 不是“Graph<T,E>”的成员
+         main.cpp
+     1>c:\users\duan\desktop\c++\连通分量\graph.h(264): error C2039: “Kruskal”: 不是“Graph<T,E>”的成员
+     1>c:\users\duan\desktop\c++\连通分量\graph.h(299): error C2039: “Prim”: 不是“Graph<T,E>”的成员
+         正在生成代码...
+     1>已完成生成项目“C:\Users\duan\Desktop\c++\连通分量\homework7\homework7\homework7.vcxproj”(Build 个目标)的操作 - 失败。
+
+生成失败。
+
+已用时间 00:00:01.62
