@@ -2,13 +2,10 @@
 #define GRAPHLNK_H
 #include "Graph.h"
 #include <iostream>
-#include <cassert>
+#include <assert>
 using namespace std;
-
 extern const int maxWeight;							//代表无穷大的值(=)
-
 const int DefaultVertices = 30;						//默认最大顶点数(=n)
-
 //邻接表实现的图类
 template <typename T, typename E>struct Edge{		//边结点的定义
 	int dest;										//边的另一顶点位置
@@ -26,7 +23,8 @@ template <typename T, typename E>struct Edge{		//边结点的定义
 };
 
 //顶点的定义
-template <typename T, typename E>struct Vertex{
+template <typename T, typename E>
+struct Vertex{
 	T data;					//顶点的名字
 	Edge<T,E> *adj;			//边链表的头指针
 };

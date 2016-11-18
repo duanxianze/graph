@@ -5,9 +5,9 @@
 #include "UFSets.h"
 #include "SeqQueue.h"
 #include "Tree.h" 
-const int maxWeight = 100000;
-// Í¼µÄ³éÏó»ùÀà¶¨Òå#ÓĞÈ¨ÎŞÏòÍ¼
-// TÎª¶¥µãµÄÀàĞÍ£»EÎª±ßÈ¨ÖµµÄÀàĞÍ£¬Ò»°ãÓ¦ÎªÄ³Ò»ÕûÊıÀàĞÍ¡£
+extern const int maxWeight;
+// å›¾çš„æŠ½è±¡åŸºç±»å®šä¹‰#æœ‰æƒæ— å‘å›¾
+// Tä¸ºé¡¶ç‚¹çš„ç±»å‹ï¼›Eä¸ºè¾¹æƒå€¼çš„ç±»å‹ï¼Œä¸€èˆ¬åº”ä¸ºæŸä¸€æ•´æ•°ç±»å‹ã€‚
 template <class T, class E>
 class Graph{
 public:
@@ -17,44 +17,44 @@ public:
 		numEdges = 0;
 	}
 	virtual ~Graph(){};
-	bool GraphEmpty() const{				//ÅĞÍ¼¿Õ·ñ	
+	bool GraphEmpty() const{				//åˆ¤å›¾ç©ºå¦	
 		return (numEdges == 0);
-	}	
-	bool GraphFull() const{					//ÅĞÍ¼Âú·ñ 	
-		return (numVertices == maxVertices || 
-			numEdges == maxVertices*(maxVertices-1)/2);//ÎŞÏòÍ¼£¬ÓĞÏòÍ¼²»³ıÒÔ2
 	}
-	int NumberOfVertices(){				//·µ»Øµ±Ç°¶¥µãÊı	
+	bool GraphFull() const{					//åˆ¤å›¾æ»¡å¦ 	
+		return (numVertices == maxVertices || 
+			numEdges == maxVertices*(maxVertices-1)/2);//æ— å‘å›¾ï¼Œæœ‰å‘å›¾ä¸é™¤ä»¥2
+	}
+	int NumberOfVertices(){				//è¿”å›å½“å‰é¡¶ç‚¹æ•°	
 		return numVertices;
 	}
-	int NumberOfEdges(){					//·µ»Øµ±Ç°±ßÊı	
+	int NumberOfEdges(){					//è¿”å›å½“å‰è¾¹æ•°	
 		return numEdges;
 	}
-	void DFS();						    //Éî¶ÈÓÅÏÈ±éÀúÍ¼£¬Êä³öËùÓĞµÄÁ¬Í¨·ÖÁ¿
-	void BFS();						    //¹ã¶ÈÓÅÏÈ±éÀúÍ¼£¬Êä³öËùÓĞµÄÁ¬Í¨·ÖÁ¿
-	void DFSTree(Tree<T> &tree);		//Á¢ÒÔ×ó×ÓÅ®-ÓÒĞÖµÜÁ´±í±íÊ¾µÄDFSÉú³ÉÉ­ÁÖ¡£
-	void Components();					//ÀûÓÃÉî¶ÈÓÅÏÈËÑË÷Çó·ÇÁ¬Í¨Í¼µÄÁ¬Í¨·ÖÁ¿µÄËã·¨
+	void DFS();						    //æ·±åº¦ä¼˜å…ˆéå†å›¾ï¼Œè¾“å‡ºæ‰€æœ‰çš„è¿é€šåˆ†é‡
+	void BFS();						    //å¹¿åº¦ä¼˜å…ˆéå†å›¾ï¼Œè¾“å‡ºæ‰€æœ‰çš„è¿é€šåˆ†é‡
+	void DFSTree(Tree<T> &tree);		//ç«‹ä»¥å·¦å­å¥³-å³å…„å¼Ÿé“¾è¡¨è¡¨ç¤ºçš„DFSç”Ÿæˆæ£®æ—ã€‚
+	void Components();					//åˆ©ç”¨æ·±åº¦ä¼˜å…ˆæœç´¢æ±‚éè¿é€šå›¾çš„è¿é€šåˆ†é‡çš„ç®—æ³•
     void countComponents();
     void Graphisconnected();	
 	friend istream& operator>> (istream &in, Graph<T,E> &G){
 		int i, j, k, n, m;
 		T e1, e2;
 		E weight;
-		in >> n >> m;				//ÊäÈë¶¥µãÊıÓë±ßÊı
-		for (i = 0; i < n; i++){	//ÒÀ´ÎÊäÈë¶¥µãÖµ
+		in >> n >> m;				//è¾“å…¥é¡¶ç‚¹æ•°ä¸è¾¹æ•°
+		for (i = 0; i < n; i++){	//ä¾æ¬¡è¾“å…¥é¡¶ç‚¹å€¼
 			in >> e1;
 			G.insertVertex(e1);
 		}
 		i = 0;
 		while (i < m){
-			assert(in >> e1 >> e2 >> weight);	//ÒÀ´ÎÊäÈë±ßµÄÁ½¶¥µãÖµ¼°ÆäÈ¨Öµ
-			j = G.getVertexPos(e1);				//È¡¶ÔÓ¦¶¥µãÏÂ±ê
+			assert(in >> e1 >> e2 >> weight);	//ä¾æ¬¡è¾“å…¥è¾¹çš„ä¸¤é¡¶ç‚¹å€¼åŠå…¶æƒå€¼
+			j = G.getVertexPos(e1);				//å–å¯¹åº”é¡¶ç‚¹ä¸‹æ ‡
 			k = G.getVertexPos(e2);
-			if (j == -1 || k == -1){			//È¡¶ÔÓ¦¶¥µã²»´æÔÚ
+			if (j == -1 || k == -1){			//å–å¯¹åº”é¡¶ç‚¹ä¸å­˜åœ¨
 				cout << "Input error!\n";
 			}
 			else{
-				G.insertEdge(j, k, weight);		//ÓÉ¶¥µãÏÂ±êºÍÈ¨Öµ²åÈë±ß
+				G.insertEdge(j, k, weight);		//ç”±é¡¶ç‚¹ä¸‹æ ‡å’Œæƒå€¼æ’å…¥è¾¹
 				i++;
 			}
 		}
@@ -64,7 +64,7 @@ public:
 		int i, j, n, m;
 		T e1, e2;
 		E weight;
-		n = G.NumberOfVertices();		//¶¥µãÊıÓë±ßÊı
+		n = G.NumberOfVertices();		//é¡¶ç‚¹æ•°ä¸è¾¹æ•°
 		m = G.NumberOfEdges();
 		out << "Number of Vertices: " << n << endl;
 		out << "Number of Edges: " << m << endl;
@@ -73,7 +73,7 @@ public:
 			for (j = i + 1; j < n; j++){
 				weight = G.getWeight(i, j);
 				if (weight > 0 && weight < maxWeight){
-					e1 = G.getValue(i);	//ÓÉÏÂ±êÈ¡µÃ¶¥µãÖµ
+					e1 = G.getValue(i);	//ç”±ä¸‹æ ‡å–å¾—é¡¶ç‚¹å€¼
 					e2 = G.getValue(j);
 					out << "(" << e1 << "," << e2 << "," << weight << ")" << endl;
 				}
@@ -81,69 +81,69 @@ public:
 		}
 		return out;
 	}
-	// Í¼µÄ×ÓÀà±ØĞëÊµÏÖµÄÒ»Ğ©½Ó¿Ú
-	virtual T getValue(int i) = 0;							//È¡Î»ÖÃÎªiµÄ¶¥µãÖĞµÄÖµ
-	virtual E getWeight(int v1, int v2) = 0;				//·µ»Ø±ß(v1,v2)ÉÏµÄÈ¨Öµ
-	virtual bool insertVertex(const T &vertex) = 0;			//ÔÚÍ¼ÖĞ²åÈëÒ»¸ö¶¥µãvertex
-	virtual bool removeVertex(int v) = 0;					//ÔÚÍ¼ÖĞÉ¾³ıÒ»¸ö¶¥µãv
-	virtual bool insertEdge(int v1, int v2, E weight) = 0;	//²åÈëÈ¨ÖµÎªweightµÄ±ß(v1,v2)
-	virtual bool removeEdge(int v1, int v2) = 0;			//É¾³ı±ß(v1,v2)
-	virtual int getFirstNeighbor(int v) = 0;				//È¡¶¥µãvµÄµÚÒ»¸öÁÚ½Ó¶¥µã
-	virtual int getNextNeighbor(int v, int w) = 0;			//È¡vµÄÁÚ½Ó¶¥µãwµÄÏÂÒ»ÁÚ½Ó¶¥µã
-	virtual int getVertexPos(const T &vertex) = 0;	//¸ø³ö¶¥µãvertexÔÚÍ¼ÖĞµÄÎ»ÖÃ
+	// å›¾çš„å­ç±»å¿…é¡»å®ç°çš„ä¸€äº›æ¥å£
+	virtual T getValue(int i) = 0;							//å–ä½ç½®ä¸ºiçš„é¡¶ç‚¹ä¸­çš„å€¼
+	virtual E getWeight(int v1, int v2) = 0;				//è¿”å›è¾¹(v1,v2)ä¸Šçš„æƒå€¼
+	virtual bool insertVertex(const T &vertex) = 0;			//åœ¨å›¾ä¸­æ’å…¥ä¸€ä¸ªé¡¶ç‚¹vertex
+	virtual bool removeVertex(int v) = 0;					//åœ¨å›¾ä¸­åˆ é™¤ä¸€ä¸ªé¡¶ç‚¹v
+	virtual bool insertEdge(int v1, int v2, E weight) = 0;	//æ’å…¥æƒå€¼ä¸ºweightçš„è¾¹(v1,v2)
+	virtual bool removeEdge(int v1, int v2) = 0;			//åˆ é™¤è¾¹(v1,v2)
+	virtual int getFirstNeighbor(int v) = 0;				//å–é¡¶ç‚¹vçš„ç¬¬ä¸€ä¸ªé‚»æ¥é¡¶ç‚¹
+	virtual int getNextNeighbor(int v, int w) = 0;			//å–vçš„é‚»æ¥é¡¶ç‚¹wçš„ä¸‹ä¸€é‚»æ¥é¡¶ç‚¹
+	virtual int getVertexPos(const T &vertex) = 0;	//ç»™å‡ºé¡¶ç‚¹vertexåœ¨å›¾ä¸­çš„ä½ç½®
 protected:
-	int maxVertices;			//Í¼ÖĞ×î´ó¶¥µãÊı
-	int numEdges;				//µ±Ç°±ßÊı
-	int numVertices;			//µ±Ç°¶¥µãÊı
-	void DFS(int v, bool visited[]);					   //Éî¶ÈÓÅÏÈ±éÀúÍ¼£¬×Ó¹ı³Ì
+	int maxVertices;			//å›¾ä¸­æœ€å¤§é¡¶ç‚¹æ•°
+	int numEdges;				//å½“å‰è¾¹æ•°
+	int numVertices;			//å½“å‰é¡¶ç‚¹æ•°
+	void DFS(int v, bool visited[]);					   //æ·±åº¦ä¼˜å…ˆéå†å›¾ï¼Œå­è¿‡ç¨‹
 	void DFSTree(int v, bool visited[], TreeNode<T> *& subTree);
 	void BFS(int v, bool visited[]);
 };
 
 
-//Éî¶ÈÓÅÏÈ±éÀúÍ¼£¬Êä³öËùÓĞµÄÁ¬Í¨·ÖÁ¿
+//æ·±åº¦ä¼˜å…ˆéå†å›¾ï¼Œè¾“å‡ºæ‰€æœ‰çš„è¿é€šåˆ†é‡
 template<class T, class E>
 void Graph<T,E>::DFS(){
-	int i, n = NumberOfVertices();		//È¡Í¼ÖĞ¶¥µã¸öÊı
-	bool *visited = new bool[n]; 		//´´½¨¸¨ÖúÊı×é
-	for (i = 0; i < n; i++){			//¸¨ÖúÊı×évisited³õÊ¼»¯	
+	int i, n = NumberOfVertices();		//å–å›¾ä¸­é¡¶ç‚¹ä¸ªæ•°
+	bool *visited = new bool[n]; 		//åˆ›å»ºè¾…åŠ©æ•°ç»„
+	for (i = 0; i < n; i++){			//è¾…åŠ©æ•°ç»„visitedåˆå§‹åŒ–	
 		visited[i] = false;
 	}
-	//DFS(0,visited);        //Á¬Í¨Í¼
-	for(i=0;i<n;i++){					//#·ÇÁ¬Í¨Í¼£¬´ÓÃ¿¸ö¶¥µã¿ªÊ¼£¬¸÷×öÒ»´Î±éÀú¡£
-		if(!visited[i]){				//#½èÖú¸¨ÖúÊı×é£¬ÉÏÒ»ÌË±éÀúÒÑ·ÃÎÊ¹ıµÄ¸÷¶¥µã²»»á×÷ÎªĞÂÆğµã¡£ËùÒÔÊä³öÁËËùÓĞÁ¬Í¨·ÖÁ¿£¬²»»áÖØ¸´¡£
-			DFS(i, visited); 			//´Ó¶¥µã0¿ªÊ¼Éî¶ÈÓÅÏÈËÑË÷
+	//DFS(0,visited);        //è¿é€šå›¾
+	for(i=0;i<n;i++){					//#éè¿é€šå›¾ï¼Œä»æ¯ä¸ªé¡¶ç‚¹å¼€å§‹ï¼Œå„åšä¸€æ¬¡éå†ã€‚
+		if(!visited[i]){				//#å€ŸåŠ©è¾…åŠ©æ•°ç»„ï¼Œä¸Šä¸€è¶Ÿéå†å·²è®¿é—®è¿‡çš„å„é¡¶ç‚¹ä¸ä¼šä½œä¸ºæ–°èµ·ç‚¹ã€‚æ‰€ä»¥è¾“å‡ºäº†æ‰€æœ‰è¿é€šåˆ†é‡ï¼Œä¸ä¼šé‡å¤ã€‚
+			DFS(i, visited); 			//ä»é¡¶ç‚¹0å¼€å§‹æ·±åº¦ä¼˜å…ˆæœç´¢
 			cout<<endl;
 		}
 	}
-	delete [] visited;					//ÊÍ·Åvisited
+	delete [] visited;					//é‡Šæ”¾visited
 }
 
-//´Ó¶¥µãÎ»ÖÃv³ö·¢, ÒÔÉî¶ÈÓÅÏÈµÄ´ÎĞò·ÃÎÊËùÓĞ¿É¶ÁÈëµÄÉĞÎ´·ÃÎÊ¹ıµÄ¶¥µã¡£
-//Ëã·¨ÖĞÓÃµ½Ò»¸ö¸¨ÖúÊı×évisited, ¶ÔÒÑ·ÃÎÊ¹ıµÄ¶¥µã×÷·ÃÎÊ±ê¼Ç¡£
+//ä»é¡¶ç‚¹ä½ç½®vå‡ºå‘, ä»¥æ·±åº¦ä¼˜å…ˆçš„æ¬¡åºè®¿é—®æ‰€æœ‰å¯è¯»å…¥çš„å°šæœªè®¿é—®è¿‡çš„é¡¶ç‚¹ã€‚
+//ç®—æ³•ä¸­ç”¨åˆ°ä¸€ä¸ªè¾…åŠ©æ•°ç»„visited, å¯¹å·²è®¿é—®è¿‡çš„é¡¶ç‚¹ä½œè®¿é—®æ ‡è®°ã€‚
 template<class T, class E>
 void Graph<T,E>::DFS(int v, bool visited[]){
-	cout << getValue(v) << ' ';			//·ÃÎÊ¶¥µãv
-	visited[v] = true;	 				//¶¥µãv×÷·ÃÎÊ±ê¼Ç
-	int w = getFirstNeighbor(v); 		//ÕÒ¶¥µãvµÄµÚÒ»¸öÁÚ½Ó¶¥µãw
-	while (w != -1){					//ÈôÁÚ½Ó¶¥µãw´æÔÚ¡£#×¢ÒâÒòÎªÁÚ½Ó¶¥µãÊıÄ¿²»¶¨£¬Ê¹ÓÃÑ­»·Óï¾ä£¬ÓëÊ÷ÏàÍ¬£¬Óë¶ş²æÊ÷²»Í¬	
-		if (visited[w] == false){		//ÈôwÎ´·ÃÎÊ¹ı, µİ¹é·ÃÎÊ¶¥µãw		
+	cout << getValue(v) << ' ';			//è®¿é—®é¡¶ç‚¹v
+	visited[v] = true;	 				//é¡¶ç‚¹vä½œè®¿é—®æ ‡è®°
+	int w = getFirstNeighbor(v); 		//æ‰¾é¡¶ç‚¹vçš„ç¬¬ä¸€ä¸ªé‚»æ¥é¡¶ç‚¹w
+	while (w != -1){					//è‹¥é‚»æ¥é¡¶ç‚¹wå­˜åœ¨ã€‚#æ³¨æ„å› ä¸ºé‚»æ¥é¡¶ç‚¹æ•°ç›®ä¸å®šï¼Œä½¿ç”¨å¾ªç¯è¯­å¥ï¼Œä¸æ ‘ç›¸åŒï¼Œä¸äºŒå‰æ ‘ä¸åŒ	
+		if (visited[w] == false){		//è‹¥wæœªè®¿é—®è¿‡, é€’å½’è®¿é—®é¡¶ç‚¹w		
 			DFS(w, visited);
 		}
-		w = getNextNeighbor(v, w);		//È¡vÅÅÔÚwºóµÄÏÂÒ»¸öÁÚ½Ó¶¥µã
+		w = getNextNeighbor(v, w);		//å–væ’åœ¨wåçš„ä¸‹ä¸€ä¸ªé‚»æ¥é¡¶ç‚¹
 	}
 }
 
-//¹ã¶ÈÓÅÏÈ±éÀúÍ¼£¬Êä³öËùÓĞµÄÁ¬Í¨·ÖÁ¿
+//å¹¿åº¦ä¼˜å…ˆéå†å›¾ï¼Œè¾“å‡ºæ‰€æœ‰çš„è¿é€šåˆ†é‡
 template <class T, class E>
 void Graph<T,E>::BFS(){
-	int i, n = NumberOfVertices();		//Í¼ÖĞ¶¥µã¸öÊı
+	int i, n = NumberOfVertices();		//å›¾ä¸­é¡¶ç‚¹ä¸ªæ•°
 	bool *visited = new bool[n];	
 	for (i = 0; i < n; i++){
 		visited[i] = false;
 	}
-	for (i = 0; i < n; i++){	//#´ÓÃ¿¸ö¶¥µã¿ªÊ¼£¬¸÷×öÒ»´Î±éÀú¡£
-		//if (visited[i] == true){//#½èÖú¸¨ÖúÊı×é£¬ÉÏÒ»ÌË±éÀúÒÑ·ÃÎÊ¹ıµÄ¸÷¶¥µã²»»á×÷ÎªĞÂÆğµã¡£ËùÒÔÊä³öÁËËùÓĞÁ¬Í¨·ÖÁ¿£¬²»»áÖØ¸´¡£
+	for (i = 0; i < n; i++){	//#ä»æ¯ä¸ªé¡¶ç‚¹å¼€å§‹ï¼Œå„åšä¸€æ¬¡éå†ã€‚
+		//if (visited[i] == true){//#å€ŸåŠ©è¾…åŠ©æ•°ç»„ï¼Œä¸Šä¸€è¶Ÿéå†å·²è®¿é—®è¿‡çš„å„é¡¶ç‚¹ä¸ä¼šä½œä¸ºæ–°èµ·ç‚¹ã€‚æ‰€ä»¥è¾“å‡ºäº†æ‰€æœ‰è¿é€šåˆ†é‡ï¼Œä¸ä¼šé‡å¤ã€‚
 		//	continue;
 		//}
 		if(!visited[i])
@@ -158,40 +158,38 @@ void Graph<T,E>::BFS(int i, bool visited[])
 {
 	SeqQueue<int> Q;
 	 int v,w;
-	 cout << getValue(i) << ' ';				//·ÃÎÊ¶¥µãv
-	 visited[i] = true;						//×öÒÑ·ÃÎÊ±ê¼Ç
+	 cout << getValue(i) << ' ';				//è®¿é—®é¡¶ç‚¹v
+	 visited[i] = true;						//åšå·²è®¿é—®æ ‡è®°
 	  Q.EnQueue(i);
-		//¶¥µã½ø¶ÓÁĞ, ÊµÏÖ·Ö²ã·ÃÎÊ
-		while (!Q.IsEmpty()){		//Ñ­»·, ·ÃÎÊËùÓĞ½áµã
-			Q.DeQueue(v);					//²»ÄÜËæÒâ¸Ä±ä¿ØÖÆ±äÁ¿i
-			w = getFirstNeighbor(v);			//µÚÒ»¸öÁÚ½Ó¶¥µã
-			while (w != -1){						//ÈôÁÚ½Ó¶¥µãw´æÔÚ			
-				if (!visited[w]){				//ÈôÎ´·ÃÎÊ¹ı				
-					cout << getValue(w) << ' ';	//·ÃÎÊ
+		//é¡¶ç‚¹è¿›é˜Ÿåˆ—, å®ç°åˆ†å±‚è®¿é—®
+		while (!Q.IsEmpty()){		//å¾ªç¯, è®¿é—®æ‰€æœ‰ç»“ç‚¹
+			Q.DeQueue(v);					//ä¸èƒ½éšæ„æ”¹å˜æ§åˆ¶å˜é‡i
+			w = getFirstNeighbor(v);			//ç¬¬ä¸€ä¸ªé‚»æ¥é¡¶ç‚¹
+			while (w != -1){						//è‹¥é‚»æ¥é¡¶ç‚¹wå­˜åœ¨			
+				if (!visited[w]){				//è‹¥æœªè®¿é—®è¿‡				
+					cout << getValue(w) << ' ';	//è®¿é—®
 					visited[w] = true; 		
-					Q.EnQueue(w);				//¶¥µãw½ø¶ÓÁĞ
+					Q.EnQueue(w);				//é¡¶ç‚¹wè¿›é˜Ÿåˆ—
 				    }
-				w = getNextNeighbor(v, w);		//ÕÒ¶¥µãvµÄÏÂÒ»¸öÁÚ½Ó¶¥µã
+				w = getNextNeighbor(v, w);		//æ‰¾é¡¶ç‚¹vçš„ä¸‹ä¸€ä¸ªé‚»æ¥é¡¶ç‚¹
 			}
-		}//Íâ²ãÑ­»·£¬ÅĞ¶ÓÁĞ¿Õ·ñ
+		}//å¤–å±‚å¾ªç¯ï¼Œåˆ¤é˜Ÿåˆ—ç©ºå¦
 		cout << endl;
 
     //delete [] visited;
 }
 
-
-
-//´ÓÍ¼µÄµÚÒ»¸ö¶¥µã³ö·¢£¬Éî¶ÈÓÅÏÈ±éÀúÍ¼£¬
-//½¨Á¢ÒÔ×ó×ÓÅ®-ÓÒĞÖµÜÁ´±í±íÊ¾µÄDFSÉú³ÉÉ­ÁÖ¡£
+//ä»å›¾çš„ç¬¬ä¸€ä¸ªé¡¶ç‚¹å‡ºå‘ï¼Œæ·±åº¦ä¼˜å…ˆéå†å›¾ï¼Œ
+//å»ºç«‹ä»¥å·¦å­å¥³-å³å…„å¼Ÿé“¾è¡¨è¡¨ç¤ºçš„DFSç”Ÿæˆæ£®æ—ã€‚
 template<class T, class E> void Graph<T,E>::DFSTree(Tree<T> &tree){
 	TreeNode<T> *p, *q;
-	int v, n = NumberOfVertices();		//È¡Í¼ÖĞ¶¥µã¸öÊı
-	bool *visited = new bool[n]; 		//´´½¨¸¨ÖúÊı×é
-	for (v = 0; v < n; v++){			//¸¨ÖúÊı×évisited³õÊ¼»¯	
+	int v, n = NumberOfVertices();		//å–å›¾ä¸­é¡¶ç‚¹ä¸ªæ•°
+	bool *visited = new bool[n]; 		//åˆ›å»ºè¾…åŠ©æ•°ç»„
+	for (v = 0; v < n; v++){			//è¾…åŠ©æ•°ç»„visitedåˆå§‹åŒ–	
 		visited[v] = false;
 	}
-	for(v = 0; v < n; v++){				//#´ÓÃ¿¸ö¶¥µã¿ªÊ¼£¬¸÷×öÒ»´Î±éÀú¡£
-		if(!visited[v]){				//#½èÖú¸¨ÖúÊı×é£¬ÉÏÒ»ÌË±éÀúÒÑ·ÃÎÊ¹ıµÄ¸÷¶¥µã²»»á×÷ÎªĞÂÆğµã¡£ËùÒÔÊä³öÁËËùÓĞÁ¬Í¨·ÖÁ¿£¬²»»áÖØ¸´¡£
+	for(v = 0; v < n; v++){				//#ä»æ¯ä¸ªé¡¶ç‚¹å¼€å§‹ï¼Œå„åšä¸€æ¬¡éå†ã€‚
+		if(!visited[v]){				//#å€ŸåŠ©è¾…åŠ©æ•°ç»„ï¼Œä¸Šä¸€è¶Ÿéå†å·²è®¿é—®è¿‡çš„å„é¡¶ç‚¹ä¸ä¼šä½œä¸ºæ–°èµ·ç‚¹ã€‚æ‰€ä»¥è¾“å‡ºäº†æ‰€æœ‰è¿é€šåˆ†é‡ï¼Œä¸ä¼šé‡å¤ã€‚
 			p = new TreeNode<T>(getValue(v));
 			if (!tree.getRoot()){
 				tree.setRoot(p);
@@ -200,97 +198,98 @@ template<class T, class E> void Graph<T,E>::DFSTree(Tree<T> &tree){
 				q->nextSibling = p;
 			}
 			q = p;
-			DFSTree(v, visited, p); 	//´Ó¶¥µã0¿ªÊ¼Éî¶ÈÓÅÏÈËÑË÷
+			DFSTree(v, visited, p); 	//ä»é¡¶ç‚¹0å¼€å§‹æ·±åº¦ä¼˜å…ˆæœç´¢
 		}
 	}
-	delete [] visited;					//ÊÍ·Åvisited
+	delete [] visited;					//é‡Šæ”¾visited
 }
 
-//´ÓÍ¼µÄ¶¥µãv³ö·¢£¬ÒÔÉî¶ÈÓÅÏÈ´ÎĞò±éÀúÍ¼£¬½¨Á¢ÒÔsubTreeÎª¸ùµÄÉú³ÉÊ÷£»
-//¸ù½áµãsubTreeÒÑÔÚÉÏ²ãËã·¨ÖĞ´´½¨¡£
-//Ëã·¨ÖĞÓÃµ½Ò»¸ö¸¨ÖúÊı×évisited, ¶ÔÒÑ·ÃÎÊ¹ıµÄ¶¥µã×÷·ÃÎÊ±ê¼Ç¡£
-template<class T, class E>void Graph<T,E>::DFSTree(int v, bool visited[], TreeNode<T> *& subTree){
+//ä»å›¾çš„é¡¶ç‚¹vå‡ºå‘ï¼Œä»¥æ·±åº¦ä¼˜å…ˆæ¬¡åºéå†å›¾ï¼Œå»ºç«‹ä»¥subTreeä¸ºæ ¹çš„ç”Ÿæˆæ ‘ï¼›
+//æ ¹ç»“ç‚¹subTreeå·²åœ¨ä¸Šå±‚ç®—æ³•ä¸­åˆ›å»ºã€‚
+//ç®—æ³•ä¸­ç”¨åˆ°ä¸€ä¸ªè¾…åŠ©æ•°ç»„visited, å¯¹å·²è®¿é—®è¿‡çš„é¡¶ç‚¹ä½œè®¿é—®æ ‡è®°ã€‚
+template<class T, class E>
+void Graph<T,E>::DFSTree(int v, bool visited[], TreeNode<T> *& subTree){
 	bool first = true;
-	visited[v] = true;	 				//¶¥µãv×÷·ÃÎÊ±ê¼Ç
+	visited[v] = true;	 				//é¡¶ç‚¹vä½œè®¿é—®æ ‡è®°
 	TreeNode<T> *p, *q;
-	int w = getFirstNeighbor(v); 		//ÕÒ¶¥µãvµÄµÚÒ»¸öÁÚ½Ó¶¥µãw
-	while (w != -1){						//ÈôÁÚ½Ó¶¥µãw´æÔÚ	
-		if (visited[w] == false){		//ÈôwÎ´·ÃÎÊ¹ı, µİ¹é·ÃÎÊ¶¥µãw		
+	int w = getFirstNeighbor(v); 		//æ‰¾é¡¶ç‚¹vçš„ç¬¬ä¸€ä¸ªé‚»æ¥é¡¶ç‚¹w
+	while (w != -1){						//è‹¥é‚»æ¥é¡¶ç‚¹wå­˜åœ¨	
+		if (visited[w] == false){		//è‹¥wæœªè®¿é—®è¿‡, é€’å½’è®¿é—®é¡¶ç‚¹w		
 			p = new TreeNode<T>(getValue(w));
 			if (first){
-				subTree->firstChild = p;//µÚÒ»¸öÁÚ½Ó¶¥µã×÷Îª×ó³¤×ÓÅ®
+				subTree->firstChild = p;//ç¬¬ä¸€ä¸ªé‚»æ¥é¡¶ç‚¹ä½œä¸ºå·¦é•¿å­å¥³
 				first = false;
 			}
 			else{
-				q->nextSibling = p;//ÆäÓàÁÚ½Ó¶¥µã×÷ÎªÓÒĞÖµÜ
+				q->nextSibling = p;//å…¶ä½™é‚»æ¥é¡¶ç‚¹ä½œä¸ºå³å…„å¼Ÿ
 			}
 			q = p;
 			DFSTree(w, visited, q);
 		}
-		w = getNextNeighbor(v, w);		//È¡vÅÅÔÚwºóµÄÏÂÒ»¸öÁÚ½Ó¶¥µã
+		w = getNextNeighbor(v, w);		//å–væ’åœ¨wåçš„ä¸‹ä¸€ä¸ªé‚»æ¥é¡¶ç‚¹
 	}
 }
 
-// Çó×îĞ¡Éú³ÉÊ÷
+// æ±‚æœ€å°ç”Ÿæˆæ ‘
 template <class T, class E>
 void Graph<T,E>::Kruskal(MinSpanTree<T,E> &MST){
-	MSTEdgeNode<T,E> ed;				//±ß½áµã¸¨Öúµ¥Ôª
+	MSTEdgeNode<T,E> ed;				//è¾¹ç»“ç‚¹è¾…åŠ©å•å…ƒ
 	int u, v, count;
-	int n = NumberOfVertices();			//¶¥µãÊı
-	int m = NumberOfEdges();			//±ßÊı
-	MinHeap<E,MSTEdgeNode<T,E> > H(m);	//×îĞ¡¶Ñ,¹Ø¼üÂëÀàĞÍÎªE
-	UFSets F(n);						//²¢²é¼¯
+	int n = NumberOfVertices();			//é¡¶ç‚¹æ•°
+	int m = NumberOfEdges();			//è¾¹æ•°
+	MinHeap<E,MSTEdgeNode<T,E> > H(m);	//æœ€å°å †,å…³é”®ç ç±»å‹ä¸ºE
+	UFSets F(n);						//å¹¶æŸ¥é›†
 	for (u = 0; u < n; u++){
 		for (v = u+1; v < n; v++){
-			if (getWeight(u,v) != 0){//#¶ÔÓ¦±ß´æÔÚ
+			if (getWeight(u,v) != 0){//#å¯¹åº”è¾¹å­˜åœ¨
 				ed.tail = u;
 				ed.head = v;
 				ed.key = getWeight(u, v);
-				H.Insert(ed);			//²åÈë¶Ñ
+				H.Insert(ed);			//æ’å…¥å †
 			}
 		}
 	}
-	count = 1;							//×îĞ¡Éú³ÉÊ÷¼ÓÈë±ßÊı¼ÆÊı
-	while (count < n){					//·´¸´Ö´ĞĞ, È¡n-1Ìõ±ß	
-		H.RemoveMin(ed);				//´Ó×îĞ¡¶ÑÖĞÍË³ö¾ß×îĞ¡È¨ÖµµÄ±ßed
+	count = 1;							//æœ€å°ç”Ÿæˆæ ‘åŠ å…¥è¾¹æ•°è®¡æ•°
+	while (count < n){					//åå¤æ‰§è¡Œ, å–n-1æ¡è¾¹	
+		H.RemoveMin(ed);				//ä»æœ€å°å †ä¸­é€€å‡ºå…·æœ€å°æƒå€¼çš„è¾¹ed
 		u = F.Find(ed.tail);
-		v = F.Find(ed.head);			//È¡Á½¶¥µãËùÔÚ¼¯ºÏµÄ¸ùuÓëv
-		if (u != v){						//²»ÊÇÍ¬Ò»¼¯ºÏ, ËµÃ÷²»Á¬Í¨		
-			F.SimpleUnion(u, v);		//ºÏ²¢, Á¬Í¨ËüÃÇ
-			MST.Insert(ed);				//¸Ã±ß´æÈë×îĞ¡Éú³ÉÊ÷
+		v = F.Find(ed.head);			//å–ä¸¤é¡¶ç‚¹æ‰€åœ¨é›†åˆçš„æ ¹uä¸v
+		if (u != v){						//ä¸æ˜¯åŒä¸€é›†åˆ, è¯´æ˜ä¸è¿é€š		
+			F.SimpleUnion(u, v);		//åˆå¹¶, è¿é€šå®ƒä»¬
+			MST.Insert(ed);				//è¯¥è¾¹å­˜å…¥æœ€å°ç”Ÿæˆæ ‘
 			count++;
 		}
 	} 
 }
 template <class T, class E>
 void Graph<T,E>::Prim(MinSpanTree<T, E> &MST){
-	MSTEdgeNode<T, E> ed; //±ß½áµã¸¨Öúµ¥Ôª
+	MSTEdgeNode<T, E> ed; //è¾¹ç»“ç‚¹è¾…åŠ©å•å…ƒ
 	int i, u, v, count;				
-	int n = NumberOfVertices();	  //¶¥µãÊı	
-	int m = NumberOfEdges();	  //±ßÊı
-//	int u = getVertexPos(u0);		  //ÆğÊ¼¶¥µãºÅ
+	int n = NumberOfVertices();	  //é¡¶ç‚¹æ•°	
+	int m = NumberOfEdges();	  //è¾¹æ•°
+//	int u = getVertexPos(u0);		  //èµ·å§‹é¡¶ç‚¹å·
 	u = 0;
-	MinHeap <E,MSTEdgeNode<T, E> > H(m);  //×îĞ¡¶Ñ
-	bool *Vmst = new bool[n];   //×îĞ¡Éú³ÉÊ÷¶¥µã¼¯ºÏ
+	MinHeap <E,MSTEdgeNode<T, E> > H(m);  //æœ€å°å †
+	bool *Vmst = new bool[n];   //æœ€å°ç”Ÿæˆæ ‘é¡¶ç‚¹é›†åˆ
 	for (i = 0; i < n; i++) Vmst[i] = false;	
-	Vmst[u] = true;		        //u ¼ÓÈëÉú³ÉÊ÷
+	Vmst[u] = true;		        //u åŠ å…¥ç”Ÿæˆæ ‘
 	count = 1;
-	do{			        //µü´ú	
+	do{			        //è¿­ä»£	
 		v = getFirstNeighbor(u); 
-		while (v != -1){	 //¼ì²âuËùÓĞÁÚ½Ó¶¥µã		
-			if (!Vmst[v]){	        //v²»ÔÚmstÖĞ			
+		while (v != -1){	 //æ£€æµ‹uæ‰€æœ‰é‚»æ¥é¡¶ç‚¹		
+			if (!Vmst[v]){	        //vä¸åœ¨mstä¸­			
 				ed.tail = u;  ed.head = v;
 				ed.key = getWeight(u, v);
-				H.Insert(ed);	        //(u,v)¼ÓÈë¶Ñ
-			}     //¶ÑÖĞ´æËùÓĞuÔÚmstÖĞ, v²»ÔÚmstÖĞµÄ±ß
+				H.Insert(ed);	        //(u,v)åŠ å…¥å †
+			}     //å †ä¸­å­˜æ‰€æœ‰uåœ¨mstä¸­, vä¸åœ¨mstä¸­çš„è¾¹
 			v = getNextNeighbor(u, v); 
 		} 
 		while (!H.IsEmpty() && count < n)		{ 
-			H.RemoveMin(ed);	         //Ñ¡¶ÑÖĞ¾ß×îĞ¡È¨µÄ±ß
+			H.RemoveMin(ed);	         //é€‰å †ä¸­å…·æœ€å°æƒçš„è¾¹
 			if (!Vmst[ed.head])			{
-				MST.Insert(ed);       //¼ÓÈë×îĞ¡Éú³ÉÊ÷
+				MST.Insert(ed);       //åŠ å…¥æœ€å°ç”Ÿæˆæ ‘
 				u = ed.head;
-				Vmst[u] = true;//u¼ÓÈëÉú³ÉÊ÷¶¥µã¼¯ºÏ
+				Vmst[u] = true;//uåŠ å…¥ç”Ÿæˆæ ‘é¡¶ç‚¹é›†åˆ
 				count++;  
 				break;
 			}
@@ -302,12 +301,13 @@ void Graph<T,E>::Prim(MinSpanTree<T, E> &MST){
 //////////////////////////////////////////////////////////////////
 
 //Dijkstra
-//GraphÊÇÒ»¸ö´øÈ¨ÓĞÏòÍ¼¡£
-//dist[j], 0¡Üj<n, ÊÇµ±Ç°Çóµ½µÄ´Ó¶¥µãvµ½¶¥µãjµÄ×î¶ÌÂ·¾¶³¤¶È,
-//path[j], 0¡Üj<n, ´æ·ÅÇóµ½µÄ×î¶ÌÂ·¾¶¡£
-template <class T, class E>void ShortestPath(Graph<T,E> &G, T v, E dist[], int path[]){
+//Graphæ˜¯ä¸€ä¸ªå¸¦æƒæœ‰å‘å›¾ã€‚
+//dist[j], 0â‰¤j<n, æ˜¯å½“å‰æ±‚åˆ°çš„ä»é¡¶ç‚¹våˆ°é¡¶ç‚¹jçš„æœ€çŸ­è·¯å¾„é•¿åº¦,
+//path[j], 0â‰¤j<n, å­˜æ”¾æ±‚åˆ°çš„æœ€çŸ­è·¯å¾„ã€‚
+template <class T, class E>
+void ShortestPath(Graph<T,E> &G, T v, E dist[], int path[]){
     int n = G.NumberOfVertices();
-    bool *S = new bool[n]; 	   //×î¶ÌÂ·¾¶¶¥µã¼¯
+    bool *S = new bool[n]; 	   //æœ€çŸ­è·¯å¾„é¡¶ç‚¹é›†
     int i, j, k;  E w, min;
     for (i = 0; i < n; i++)	{
 	    dist[i] = G.getWeight(v, i);
@@ -315,32 +315,33 @@ template <class T, class E>void ShortestPath(Graph<T,E> &G, T v, E dist[], int p
         if (i != v && dist[i] < maxValue) path[i] = v;
         else path[i] = -1;
     }
-    S[v] = true;  dist[v] = 0;     	//¶¥µãv¼ÓÈë¶¥µã¼¯ºÏ
-    for (i = 0; i < n-1; i++){       //Çó½â¸÷¶¥µã×î¶ÌÂ·¾¶	
+    S[v] = true;  dist[v] = 0;     	//é¡¶ç‚¹våŠ å…¥é¡¶ç‚¹é›†åˆ
+    for (i = 0; i < n-1; i++){       //æ±‚è§£å„é¡¶ç‚¹æœ€çŸ­è·¯å¾„	
         min = maxValue;
-		int u = v; 					//Ñ¡²»ÔÚSÖĞ¾ßÓĞ×î¶ÌÂ·¾¶µÄ¶¥µãu
+		int u = v; 					//é€‰ä¸åœ¨Sä¸­å…·æœ‰æœ€çŸ­è·¯å¾„çš„é¡¶ç‚¹u
         for (j = 0; j < n; j++){			
             if (!S[j] && dist[j] < min){
 				u = j;
 				min = dist[j];
 			}
 		}
-        S[u] = true;	               	//½«¶¥µãu¼ÓÈë¼¯ºÏS
-        for (k = 0; k < n; k++){       	//ĞŞ¸Ä		
+        S[u] = true;	               	//å°†é¡¶ç‚¹uåŠ å…¥é›†åˆS
+        for (k = 0; k < n; k++){       	//ä¿®æ”¹		
             w = G.GetWeight(u, k);
-            if (!S[k] && w < maxValue && dist[u]+w < dist[k]){ //¶¥µãkÎ´¼ÓÈëS   			            
+            if (!S[k] && w < maxValue && dist[u]+w < dist[k]){ //é¡¶ç‚¹kæœªåŠ å…¥S   			            
                 dist[k] = dist[u]+w; 
-                path[k] = u;     		//ĞŞ¸Äµ½kµÄ×î¶ÌÂ·¾¶
+                path[k] = u;     		//ä¿®æ”¹åˆ°kçš„æœ€çŸ­è·¯å¾„
             }    
         }
     }
 }
 
-//ÔÚÓĞÏò´øÈ¨Í¼ÖĞÓĞµÄ±ß¾ßÓĞ¸ºµÄÈ¨Öµ¡£
-//´Ó¶¥µãvÕÒµ½ËùÓĞÆäËû¶¥µãµÄ×î¶ÌÂ·¾¶¡£ 
-template <class T, class E>void Bellman_Ford(Graph<T, E>& G, int v, E dist[], int path[]){
+//åœ¨æœ‰å‘å¸¦æƒå›¾ä¸­æœ‰çš„è¾¹å…·æœ‰è´Ÿçš„æƒå€¼ã€‚
+//ä»é¡¶ç‚¹væ‰¾åˆ°æ‰€æœ‰å…¶ä»–é¡¶ç‚¹çš„æœ€çŸ­è·¯å¾„ã€‚ 
+template <class T, class E>
+void Bellman_Ford(Graph<T, E>& G, int v, E dist[], int path[]){
     E w;  int i, k, u, n = G.NumberOfVertices();
-    for (i = 0; i < n; i++){        //¼ÆËãdist1[i]	
+    for (i = 0; i < n; i++){        //è®¡ç®—dist1[i]	
         dist[i] = G.getWeight(v, i);
         if (i != v && dist[i] < maxValue){
 			path[i] = v;
@@ -349,7 +350,7 @@ template <class T, class E>void Bellman_Ford(Graph<T, E>& G, int v, E dist[], in
 			path[i] = -1;
 		}
     }
-    for (k = 2; k < n; k++){     //¼ÆËãdist2[i]µ½distn-1[i]	
+    for (k = 2; k < n; k++){     //è®¡ç®—dist2[i]åˆ°distn-1[i]	
         for (u = 0; u < n; u++){
             if (u != v){
                 for (i = 0; i < n; i++){
@@ -364,11 +365,12 @@ template <class T, class E>void Bellman_Ford(Graph<T, E>& G, int v, E dist[], in
 	}
 }
 
-//a[i][j]ÊÇ¶¥µãiºÍjÖ®¼äµÄ×î¶ÌÂ·¾¶³¤¶È¡£
-//path[i][j]ÊÇÏàÓ¦Â·¾¶ÉÏ¶¥µãjµÄÇ°Ò»¶¥µãµÄ¶¥µãºÅ¡£
-template <class T, class E>void Floyd(Graph<T,E> &G, E **a, int **path){
+//a[i][j]æ˜¯é¡¶ç‚¹iå’Œjä¹‹é—´çš„æœ€çŸ­è·¯å¾„é•¿åº¦ã€‚
+//path[i][j]æ˜¯ç›¸åº”è·¯å¾„ä¸Šé¡¶ç‚¹jçš„å‰ä¸€é¡¶ç‚¹çš„é¡¶ç‚¹å·ã€‚
+template <class T, class E>
+void Floyd(Graph<T,E> &G, E **a, int **path){
 	int i, j, k, n = G.NumberOfVertices();
-    for (i = 0; i < n; i++){    	//¾ØÕóaÓëpath³õÊ¼»¯	
+    for (i = 0; i < n; i++){    	//çŸ©é˜µaä¸pathåˆå§‹åŒ–	
         for (j = 0; j < n; j++){
             a[i][j] = G.getWeight (i,j);
 			if (i != j && a[i][j] < maxValue){
@@ -379,18 +381,17 @@ template <class T, class E>void Floyd(Graph<T,E> &G, E **a, int **path){
 			}
         }
 	}
-    for (k = 0; k < n; k++){   //Õë¶ÔÃ¿Ò»¸ök, ²úÉúa(k)¼°path(k)			
+    for (k = 0; k < n; k++){   //é’ˆå¯¹æ¯ä¸€ä¸ªk, äº§ç”Ÿa(k)åŠpath(k)			
         for (i = 0; i < n; i++){
             for (j = 0; j < n; j++){
 				if (a[i][k] + a[k][j] < a[i][j]){
                     a[i][j] = a[i][k] + a[k][j];
                     path[i][j] = path[k][j]; 
-                    //Ëõ¶ÌÂ·¾¶³¤¶È, ÈÆ¹ı k µ½ j
+                    //ç¼©çŸ­è·¯å¾„é•¿åº¦, ç»•è¿‡ k åˆ° j
                 }
 			}
 		}
 	}
 }
-
-// Í¨¹ıpathÊı×éÇó×î¶ÌÂ·¾¶µÄº¯Êı
+// é€šè¿‡pathæ•°ç»„æ±‚æœ€çŸ­è·¯å¾„çš„å‡½æ•°
 #endif

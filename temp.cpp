@@ -1,6 +1,6 @@
 #include "Graph.h"
 
-extern const int maxWeight;
+const int maxWeight=10000;
 template <class T, class E>
 int Centre(Graph<T,E> &G, E &biasDist){
 	int i, j, k, n = G.NumberOfVertices();
